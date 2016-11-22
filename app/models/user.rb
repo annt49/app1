@@ -10,6 +10,8 @@ class User < ApplicationRecord
   
   has_secure_password
 
+  enum gender: [:male, :female, :gay]
+
   class << self
 
     def digest string
@@ -35,6 +37,10 @@ class User < ApplicationRecord
 
   def forget
     update_attributes remember_digest: nil
+  end
+
+  def current_user? user
+    self == user
   end
 
   private
