@@ -13,10 +13,9 @@ class UsersController < ApplicationController
   end
 
   def show
-    if @user.nil?
-      flash[:danger] = "User not found!"
-      redirect_to root_path
-    end
+    relationship = current_user.active_relationships.find_by followed_id:
+      @user.id
+    @relationship = relationship || current_user.active_relationships.build
     @microposts = @user.microposts.order_by_created_at.paginate page:
       params[:page]
   end
