@@ -17,6 +17,8 @@ class UsersController < ApplicationController
       flash[:danger] = "User not found!"
       redirect_to root_path
     end
+    @microposts = @user.microposts.order_by_created_at.paginate page:
+      params[:page]
   end
 
   def create
@@ -37,7 +39,7 @@ class UsersController < ApplicationController
     if @user.update_attributes user_params
       flash[:success] = "Profile updated"
       redirect_to @user
-    else 
+    else
       render :edit
     end
   end
@@ -49,8 +51,7 @@ class UsersController < ApplicationController
   end
 
   private
-
-  def find_user 
+  def find_user
     @user = User.find_by id: params[:id]
     if @user.nil?
       flash[:danger] = "User not found!"
